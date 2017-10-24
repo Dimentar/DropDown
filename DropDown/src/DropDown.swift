@@ -18,58 +18,43 @@ private typealias ComputeLayoutTuple = (x: CGFloat, y: CGFloat, width: CGFloat, 
 /// Can be `UIView` or `UIBarButtonItem`.
 @objc
 public protocol AnchorView: class {
-
 	var plainView: UIView { get }
-
 }
 
 extension UIView: AnchorView {
-
 	public var plainView: UIView {
 		return self
 	}
-
 }
 
 extension UIBarButtonItem: AnchorView {
-
 	public var plainView: UIView {
 		return value(forKey: "view") as! UIView
 	}
-
 }
 
 /// A Material Design drop down in replacement for `UIPickerView`.
 public final class DropDown: UIView {
-
 	//TODO: handle iOS 7 landscape mode
 
 	/// The dismiss mode for a drop down.
 	public enum DismissMode {
-
 		/// A tap outside the drop down is required to dismiss.
 		case onTap
-
 		/// No tap is required to dismiss, it will dimiss when interacting with anything else.
 		case automatic
-
 		/// Not dismissable by the user.
 		case manual
-
 	}
 
 	/// The direction where the drop down will show from the `anchorView`.
 	public enum Direction {
-
 		/// The drop down will show below the anchor view when possible, otherwise above if there is more place than below.
 		case any
-
 		/// The drop down will show above the anchor view or will not be showed if not enough space.
 		case top
-
 		/// The drop down will show below or will not be showed if not enough space.
 		case bottom
-
 	}
 
 	//MARK: - Properties
@@ -82,7 +67,6 @@ public final class DropDown: UIView {
 	fileprivate let tableViewContainer = UIView()
 	fileprivate let tableView = UITableView()
 	fileprivate var templateCell: DropDownCell!
-
 
 	/// The view to which the drop down will displayed onto.
 	public weak var anchorView: AnchorView? {
@@ -97,26 +81,16 @@ public final class DropDown: UIView {
 	public var direction = Direction.any
 
 	/**
-	The offset point relative to `anchorView` when the drop down is shown above the anchor view.
-
-	By default, the drop down is showed onto the `anchorView` with the top
-	left corner for its origin, so an offset equal to (0, 0).
-	You can change here the default drop down origin.
-	*/
-	public var topOffset: CGPoint = .zero {
-		didSet { setNeedsUpdateConstraints() }
-	}
-
-	/**
 	The offset point relative to `anchorView` when the drop down is shown below the anchor view.
 
 	By default, the drop down is showed onto the `anchorView` with the top
 	left corner for its origin, so an offset equal to (0, 0).
 	You can change here the default drop down origin.
 	*/
-	public var bottomOffset: CGPoint = .zero {
-		didSet { setNeedsUpdateConstraints() }
-	}
+    
+    public var insets: UIEdgeInsets = .zero {
+        didSet { setNeedsUpdateConstraints() }
+    }
 
 	/**
 	The width of the drop down.
@@ -134,12 +108,12 @@ public final class DropDown: UIView {
 	fileprivate var yConstraint: NSLayoutConstraint!
 
 	//MARK: Appearance
-	public dynamic var cellHeight = DPDConstant.UI.RowHeight {
+	@objc public dynamic var cellHeight = DPDConstant.UI.RowHeight {
 		willSet { tableView.rowHeight = newValue }
 		didSet { reloadAllComponents() }
 	}
 
-	fileprivate dynamic var tableViewBackgroundColor = DPDConstant.UI.BackgroundColor {
+	@objc fileprivate dynamic var tableViewBackgroundColor = DPDConstant.UI.BackgroundColor {
 		willSet { tableView.backgroundColor = newValue }
 	}
 
@@ -153,14 +127,14 @@ public final class DropDown: UIView {
 
 	Changing the background color automatically reloads the drop down.
 	*/
-	public dynamic var selectionBackgroundColor = DPDConstant.UI.SelectionBackgroundColor
+	@objc public dynamic var selectionBackgroundColor = DPDConstant.UI.SelectionBackgroundColor
 
 	/**
 	The separator color between cells.
 
 	Changing the separator color automatically reloads the drop down.
 	*/
-	public dynamic var separatorColor = DPDConstant.UI.SeparatorColor {
+	@objc public dynamic var separatorColor = DPDConstant.UI.SeparatorColor {
 		willSet { tableView.separatorColor = newValue }
 		didSet { reloadAllComponents() }
 	}
@@ -170,7 +144,7 @@ public final class DropDown: UIView {
 
 	Changing the corner radius automatically reloads the drop down.
 	*/
-	public dynamic var cornerRadius = DPDConstant.UI.CornerRadius {
+	@objc public dynamic var cornerRadius = DPDConstant.UI.CornerRadius {
 		willSet {
 			tableViewContainer.layer.cornerRadius = newValue
 			tableView.layer.cornerRadius = newValue
@@ -183,7 +157,7 @@ public final class DropDown: UIView {
 
 	Changing the shadow color automatically reloads the drop down.
 	*/
-	public dynamic var shadowColor = DPDConstant.UI.Shadow.Color {
+	@objc public dynamic var shadowColor = DPDConstant.UI.Shadow.Color {
 		willSet { tableViewContainer.layer.shadowColor = newValue.cgColor }
 		didSet { reloadAllComponents() }
 	}
@@ -193,7 +167,7 @@ public final class DropDown: UIView {
 
 	Changing the shadow color automatically reloads the drop down.
 	*/
-	public dynamic var shadowOffset = DPDConstant.UI.Shadow.Offset {
+	@objc public dynamic var shadowOffset = DPDConstant.UI.Shadow.Offset {
 		willSet { tableViewContainer.layer.shadowOffset = newValue }
 		didSet { reloadAllComponents() }
 	}
@@ -203,7 +177,7 @@ public final class DropDown: UIView {
 
 	Changing the shadow opacity automatically reloads the drop down.
 	*/
-	public dynamic var shadowOpacity = DPDConstant.UI.Shadow.Opacity {
+	@objc public dynamic var shadowOpacity = DPDConstant.UI.Shadow.Opacity {
 		willSet { tableViewContainer.layer.shadowOpacity = newValue }
 		didSet { reloadAllComponents() }
 	}
@@ -213,7 +187,7 @@ public final class DropDown: UIView {
 
 	Changing the shadow radius automatically reloads the drop down.
 	*/
-	public dynamic var shadowRadius = DPDConstant.UI.Shadow.Radius {
+	@objc public dynamic var shadowRadius = DPDConstant.UI.Shadow.Radius {
 		willSet { tableViewContainer.layer.shadowRadius = newValue }
 		didSet { reloadAllComponents() }
 	}
@@ -221,7 +195,7 @@ public final class DropDown: UIView {
 	/**
 	The duration of the show/hide animation.
 	*/
-	public dynamic var animationduration = DPDConstant.Animation.Duration
+	@objc public dynamic var animationduration = DPDConstant.Animation.Duration
 
 	/**
 	The option of the show animation. Global change.
@@ -255,7 +229,7 @@ public final class DropDown: UIView {
 
 	Changing the text color automatically reloads the drop down.
 	*/
-	public dynamic var textColor = DPDConstant.UI.TextColor {
+	@objc public dynamic var textColor = DPDConstant.UI.TextColor {
 		didSet { reloadAllComponents() }
 	}
 
@@ -264,7 +238,7 @@ public final class DropDown: UIView {
 
 	Changing the text font automatically reloads the drop down.
 	*/
-	public dynamic var textFont = DPDConstant.UI.TextFont {
+	@objc public dynamic var textFont = DPDConstant.UI.TextFont {
 		didSet { reloadAllComponents() }
 	}
     
@@ -385,14 +359,13 @@ public final class DropDown: UIView {
 
 	- returns: A new instance of a drop down customized with the above parameters.
 	*/
-	public convenience init(anchorView: AnchorView, selectionAction: SelectionClosure? = nil, dataSource: [String] = [], topOffset: CGPoint? = nil, bottomOffset: CGPoint? = nil, cellConfiguration: ConfigurationClosure? = nil, cancelAction: Closure? = nil) {
+	public convenience init(anchorView: AnchorView, selectionAction: SelectionClosure? = nil, dataSource: [String] = [], insets: UIEdgeInsets? = nil, cellConfiguration: ConfigurationClosure? = nil, cancelAction: Closure? = nil) {
 		self.init(frame: .zero)
 
 		self.anchorView = anchorView
 		self.selectionAction = selectionAction
 		self.dataSource = dataSource
-		self.topOffset = topOffset ?? .zero
-		self.bottomOffset = bottomOffset ?? .zero
+		self.insets = insets ?? .zero
 		self.cellConfiguration = cellConfiguration
 		self.cancelAction = cancelAction
 	}
@@ -573,9 +546,7 @@ extension DropDown {
 
 			let width = self.width ?? fittingWidth()
 			let anchorViewWidth = anchorView.plainView.frame.width
-			let x = -(width - anchorViewWidth)
-
-			bottomOffset = CGPoint(x: x, y: 0)
+			insets.left = -(width - anchorViewWidth)
 		}
 		
 		if anchorView == nil {
@@ -616,13 +587,13 @@ extension DropDown {
 	fileprivate func computeLayoutBottomDisplay(window: UIWindow) -> ComputeLayoutTuple {
 		var offscreenHeight: CGFloat = 0
 		
-		let width = self.width ?? (anchorView?.plainView.bounds.width ?? fittingWidth()) - bottomOffset.x
+		let width = self.width ?? (anchorView?.plainView.bounds.width ?? fittingWidth()) - insets.left
 		
 		let anchorViewX = anchorView?.plainView.windowFrame?.minX ?? window.frame.midX - (width / 2)
 		let anchorViewY = anchorView?.plainView.windowFrame?.minY ?? window.frame.midY - (tableHeight / 2)
 		
-		let x = anchorViewX + bottomOffset.x
-		let y = anchorViewY + bottomOffset.y
+		let x = anchorViewX + insets.left
+		let y = anchorViewY + insets.bottom
 		
 		let maxY = y + tableHeight
 		let windowMaxY = window.bounds.maxY - DPDConstant.UI.HeightPadding
@@ -645,17 +616,17 @@ extension DropDown {
 		let anchorViewX = anchorView?.plainView.windowFrame?.minX ?? 0
 		let anchorViewMaxY = anchorView?.plainView.windowFrame?.maxY ?? 0
 
-		let x = anchorViewX + topOffset.x
-		var y = (anchorViewMaxY + topOffset.y) - tableHeight
+		let x = anchorViewX + insets.left + insets.right
+		var y = (anchorViewMaxY + insets.top) - tableHeight
 
-		let windowY = window.bounds.minY + DPDConstant.UI.HeightPadding
+		let windowY = window.bounds.minY + DPDConstant.UI.HeightPadding + insets.top
 
 		if y < windowY {
 			offscreenHeight = abs(y - windowY)
 			y = windowY
 		}
 		
-		let width = self.width ?? (anchorView?.plainView.bounds.width ?? fittingWidth()) - topOffset.x
+		let width = self.width ?? (anchorView?.plainView.bounds.width ?? fittingWidth()) - insets.top
 		
 		return (x, y, width, offscreenHeight)
 	}

@@ -162,7 +162,7 @@ class ViewController: UIViewController {
 		// By default, the dropdown will have its origin on the top left corner of its anchor view
 		// So it will come over the anchor view and hide it completely
 		// If you want to have the dropdown underneath your anchor view, you can do this:
-		chooseArticleDropDown.bottomOffset = CGPoint(x: 0, y: chooseArticleButton.bounds.height)
+        chooseArticleDropDown.insets.bottom = chooseArticleButton.bounds.height
 		
 		// You can also use localizationKeysDataSource instead. Check the docs.
 		chooseArticleDropDown.dataSource = [
@@ -195,7 +195,7 @@ class ViewController: UIViewController {
 		// By default, the dropdown will have its origin on the top left corner of its anchor view
 		// So it will come over the anchor view and hide it completely
 		// If you want to have the dropdown underneath your anchor view, you can do this:
-		amountDropDown.bottomOffset = CGPoint(x: 0, y: amountButton.bounds.height)
+		chooseArticleDropDown.insets.bottom = amountButton.bounds.height
 		
 		// You can also use localizationKeysDataSource instead. Check the docs.
 		amountDropDown.dataSource = [
@@ -225,7 +225,7 @@ class ViewController: UIViewController {
 		// By default, the dropdown will have its origin on the top left corner of its anchor view
 		// So it will come over the anchor view and hide it completely
 		// If you want to have the dropdown underneath your anchor view, you can do this:
-		chooseDropDown.bottomOffset = CGPoint(x: 0, y: chooseButton.bounds.height)
+		chooseDropDown.insets.bottom = chooseButton.bounds.height
 		
 		// You can also use localizationKeysDataSource instead. Check the docs.
 		chooseDropDown.dataSource = [
