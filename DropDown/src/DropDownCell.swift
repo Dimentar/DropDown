@@ -9,58 +9,56 @@
 import UIKit
 
 open class DropDownCell: UITableViewCell {
-		
-	//UI
-	@IBOutlet open weak var optionLabel: UILabel!
-	
-	var selectedBackgroundColor: UIColor?
 
+    // UI
+    @IBOutlet open weak var optionLabel: UILabel!
+
+    var selectedBackgroundColor: UIColor?
 }
 
-//MARK: - UI
+// MARK: - UI
 
 extension DropDownCell {
-	
-	override open func awakeFromNib() {
-		super.awakeFromNib()
-		
-		backgroundColor = .clear
-	}
-	
-	override open var isSelected: Bool {
-		willSet {
-			setSelected(newValue, animated: false)
-		}
-	}
-	
-	override open var isHighlighted: Bool {
-		willSet {
-			setSelected(newValue, animated: false)
-		}
-	}
-	
-	override open func setHighlighted(_ highlighted: Bool, animated: Bool) {
-		setSelected(highlighted, animated: animated)
-	}
-	
-	override open func setSelected(_ selected: Bool, animated: Bool) {
-		let executeSelection: () -> Void = { [unowned self] in
-			if let selectedBackgroundColor = self.selectedBackgroundColor {
-				if selected {
-					self.backgroundColor = selectedBackgroundColor
-				} else {
-					self.backgroundColor = .clear
-				}
-			}
-		}
-		
-		if animated {
-			UIView.animate(withDuration: 0.3, animations: {
-				executeSelection()
-			})
-		} else {
-			executeSelection()
-		}
-	}
-	
+
+    open override func awakeFromNib() {
+        super.awakeFromNib()
+
+        backgroundColor = .clear
+    }
+
+    open override var isSelected: Bool {
+        willSet {
+            setSelected(newValue, animated: false)
+        }
+    }
+
+    open override var isHighlighted: Bool {
+        willSet {
+            setSelected(newValue, animated: false)
+        }
+    }
+
+    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        setSelected(highlighted, animated: animated)
+    }
+
+    open override func setSelected(_ selected: Bool, animated: Bool) {
+        let executeSelection: () -> Void = { [unowned self] in
+            if let selectedBackgroundColor = self.selectedBackgroundColor {
+                if selected {
+                    self.backgroundColor = selectedBackgroundColor
+                } else {
+                    self.backgroundColor = .clear
+                }
+            }
+        }
+
+        if animated {
+            UIView.animate(withDuration: 0.3, animations: {
+                executeSelection()
+            })
+        } else {
+            executeSelection()
+        }
+    }
 }
